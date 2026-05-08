@@ -9,7 +9,6 @@ A modern Android application with Firebase integration and CI/CD pipeline suppor
 - **Minimum API Level**: 23 (Android 6.0)
 - **Build System**: Gradle with Android Gradle Plugin 8.2.0
 - **Backend Services**: Firebase Analytics
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
