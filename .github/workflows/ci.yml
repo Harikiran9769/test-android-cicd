@@ -29,7 +29,7 @@ jobs:
       - name: Decode google-services.json
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-          
+
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
@@ -39,6 +39,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          BUILD_NUMBER: ${{ github.run_number }}
         run: ./gradlew assembleRelease
 
       - name: Upload Release APK Artifact
@@ -67,10 +68,11 @@ jobs:
 
       - name: Upload APK to Firebase App Distribution
         run: |
+          RELEASE_NOTES="Build #${{ github.run_number }} - $(date -u +'%Y-%m-%d %H:%M:%S UTC')\nCommit: ${{ github.sha }}\nBranch: ${{ github.ref }}"
           firebase appdistribution:distribute \
             artifacts/app-release.apk \
             --app ${{ secrets.FIREBASE_APP_ID }} \
             --groups "qa-team" \
-            --release-notes "New automated build from GitHub Actions"
+            --release-notes "$RELEASE_NOTES"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
