@@ -1,5 +1,4 @@
 # SampleApp
-
 A modern Android application with Firebase integration and CI/CD pipeline support.
 
 ## Project Overview
